@@ -1,0 +1,12 @@
+digraph {
+    DataValue
+    CPURegister
+    Component
+    Component -> CPU
+    Component -> Memory
+    Component -> Bus
+    Component -> Display
+    Component -> Platform
+    CPUProgram
+    Instruction
+}
