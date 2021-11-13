@@ -164,6 +164,8 @@ Definition::IteratorPair Definition::rangeFromKey(const std::string &key) const
 
 std::optional<std::pair<std::string, std::string>> Definition::readLine()
 {
+    auto isSpace = [](char c) { return std::isspace(c); };
+
     std::string line;
     if (!std::getline(stream, line))
     {
@@ -171,6 +173,14 @@ std::optional<std::pair<std::string, std::string>> Definition::readLine()
     }
 
     auto commaPos = line.find(':');
+
+    if (commaPos == std::string::npos)
+    {
+        if (!std::ranges::all_of(line, isSpace))
+        {
+            throw std::runtime_error("invalid definition format");
+        }
+    }
 
     auto keyword = trimWhitespace(line.substr(0, commaPos));
     auto value = trimWhitespace(line.substr(commaPos + 1));
