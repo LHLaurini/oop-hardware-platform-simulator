@@ -2,11 +2,11 @@
 
 CPUDefinition::CPUDefinition() = default;
 
-CPUDefinition::CPUDefinition(const std::map<std::string, std::string> &definition)
-    : label_(definition.at("LABEL"))
-    , cores_(std::stoi(definition.at("CORES")))
-    , frequency_(std::stoi(definition.at("FREQUENCY")))
-    , program_(definition.at("PROGRAM"))
+CPUDefinition::CPUDefinition(const Definition &definition)
+    : label_(definition.fromKey("LABEL"))
+    , cores_(std::stoi(definition.fromKey("CORES")))
+    , frequency_(std::stoi(definition.fromKey("FREQUENCY")))
+    , program_(definition.fromKey("PROGRAM"))
 {
 }
 

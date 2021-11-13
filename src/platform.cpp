@@ -8,17 +8,11 @@
 
 Platform::Platform() = default;
 
-Platform::Platform(const std::filesystem::path &path)
+Platform::Platform(const PlatformDefinition &definition) : label_(definition.label())
 {
-    std::ifstream stream(path);
-    if (!stream)
+    for (auto &componentPath : definition.components())
     {
-        throw std::runtime_error("failed to open file " + path.string());
-    }
-
-    for (std::string line; std::getline(stream, line);)
-    {
-        Definition definition(line);
+        Definition definition(componentPath);
         components.emplace_back(definition.makeComponent());
 
         auto source = dynamic_cast<Source *>(components.back().get());
@@ -36,6 +30,11 @@ Platform::Platform(const std::filesystem::path &path)
             bindable->bind(*labelMap.at(bindable->sourceLabel()));
         }
     }
+}
+
+std::string Platform::label() const
+{
+    return label_;
 }
 
 void Platform::simulate()

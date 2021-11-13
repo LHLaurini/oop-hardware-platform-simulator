@@ -2,9 +2,9 @@
 
 DisplayDefinition::DisplayDefinition() = default;
 
-DisplayDefinition::DisplayDefinition(const std::map<std::string, std::string> &definition)
-    : refresh_(std::stoi(definition.at("REFRESH")))
-    , source_(definition.at("SOURCE"))
+DisplayDefinition::DisplayDefinition(const Definition &definition)
+    : refresh_(std::stoi(definition.fromKey("REFRESH")))
+    , source_(definition.fromKey("SOURCE"))
 {
 }
 

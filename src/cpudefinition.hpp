@@ -1,5 +1,7 @@
 #pragma once
 
+#include "definition.hpp"
+
 #include <filesystem>
 #include <map>
 #include <string>
@@ -8,7 +10,7 @@ class CPUDefinition
 {
   public:
     CPUDefinition();
-    CPUDefinition(const std::map<std::string, std::string> &definition);
+    CPUDefinition(const Definition &definition);
 
     std::string label() const;
     int cores() const;

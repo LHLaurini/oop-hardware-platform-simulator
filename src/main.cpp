@@ -29,13 +29,13 @@ int pmain(int argc, char **argv)
         throw std::runtime_error("number of steps unspecified");
     }
 
-    Platform platform(args.platform);
+    auto topComponent = Definition(args.platform).makeComponent();
 
     using std::views::iota;
 
     for ([[maybe_unused]] auto _ : iota(0, args.steps))
     {
-        platform.simulate();
+        topComponent->simulate();
     }
 
     return 0;

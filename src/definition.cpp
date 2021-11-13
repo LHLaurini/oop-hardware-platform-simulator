@@ -9,6 +9,7 @@
 #include "displaydefinition.hpp"
 #include "memory.hpp"
 #include "memorydefinition.hpp"
+#include "platform.hpp"
 
 #include <algorithm>
 #include <ranges>
@@ -25,7 +26,7 @@ Definition::Definition(const std::filesystem::path &path) : stream(path)
     while (auto line = readLine())
     {
         const auto &[keyword, value] = *line;
-        definitions[keyword] = value;
+        definitions.emplace(keyword, value);
     }
 
     stream.close();
@@ -35,7 +36,7 @@ Definition::Definition(const std::filesystem::path &path) : stream(path)
         throw std::runtime_error("definition file must contain TYPE");
     }
 
-    const auto &type = definitions.at("TYPE");
+    const auto &type = fromKey("TYPE");
 
     if (type == "CPU")
     {
@@ -52,6 +53,10 @@ Definition::Definition(const std::filesystem::path &path) : stream(path)
     else if (type == "DISPLAY")
     {
         type_ = Type::DISPLAY;
+    }
+    else if (type == "PLATFORM")
+    {
+        type_ = Type::PLATFORM;
     }
     else
     {
@@ -73,7 +78,7 @@ CPUDefinition Definition::makeCPUDefinition() const
         throw std::runtime_error("mismatched type");
     }
 
-    return CPUDefinition(definitions);
+    return CPUDefinition(*this);
 }
 
 BusDefinition Definition::makeBusDefinition() const
@@ -83,7 +88,7 @@ BusDefinition Definition::makeBusDefinition() const
         throw std::runtime_error("mismatched type");
     }
 
-    return BusDefinition(definitions);
+    return BusDefinition(*this);
 }
 
 MemoryDefinition Definition::makeMemoryDefinition() const
@@ -93,7 +98,7 @@ MemoryDefinition Definition::makeMemoryDefinition() const
         throw std::runtime_error("mismatched type");
     }
 
-    return MemoryDefinition(definitions);
+    return MemoryDefinition(*this);
 }
 
 DisplayDefinition Definition::makeDisplayDefinition() const
@@ -103,7 +108,17 @@ DisplayDefinition Definition::makeDisplayDefinition() const
         throw std::runtime_error("mismatched type");
     }
 
-    return DisplayDefinition(definitions);
+    return DisplayDefinition(*this);
+}
+
+PlatformDefinition Definition::makePlatformDefinition() const
+{
+    if (type() != Type::PLATFORM)
+    {
+        throw std::runtime_error("mismatched type");
+    }
+
+    return PlatformDefinition(*this);
 }
 
 std::unique_ptr<Component> Definition::makeComponent() const
@@ -122,9 +137,29 @@ std::unique_ptr<Component> Definition::makeComponent() const
     case Definition::Type::DISPLAY:
         return std::make_unique<Display>(makeDisplayDefinition());
 
+    case Definition::Type::PLATFORM:
+        return std::make_unique<Platform>(makePlatformDefinition());
+
     default:
         abort();
     }
+}
+
+std::string Definition::fromKey(const std::string &key) const
+{
+    auto [begin, end] = definitions.equal_range(key);
+
+    if (begin == end || std::next(begin) != end)
+    {
+        throw std::runtime_error("zero or more than one definition of " + key + " found");
+    }
+
+    return begin->second;
+}
+
+Definition::IteratorPair Definition::rangeFromKey(const std::string &key) const
+{
+    return definitions.equal_range(key);
 }
 
 std::optional<std::pair<std::string, std::string>> Definition::readLine()

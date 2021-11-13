@@ -1,6 +1,7 @@
 #pragma once
 
 #include "component.hpp"
+#include "platformdefinition.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -11,16 +12,19 @@
 
 class Source;
 
-class Platform
+class Platform : public Component
 {
   public:
     Platform();
-    Platform(const std::filesystem::path &path);
+    Platform(const PlatformDefinition &path);
+
+    std::string label() const;
 
     // methods
-    void simulate();
+    void simulate() override;
 
   private:
+    std::string label_;
     std::vector<std::unique_ptr<Component>> components;
     std::unordered_map<std::string, Source *> labelMap;
 };

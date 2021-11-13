@@ -2,11 +2,11 @@
 
 MemoryDefinition::MemoryDefinition() = default;
 
-MemoryDefinition::MemoryDefinition(const std::map<std::string, std::string> &definition)
-    : label_(definition.at("LABEL"))
-    , size_(std::stoi(definition.at("SIZE")))
-    , access_(std::stoi(definition.at("ACCESS")))
-    , source_(definition.at("SOURCE"))
+MemoryDefinition::MemoryDefinition(const Definition &definition)
+    : label_(definition.fromKey("LABEL"))
+    , size_(std::stoi(definition.fromKey("SIZE")))
+    , access_(std::stoi(definition.fromKey("ACCESS")))
+    , source_(definition.fromKey("SOURCE"))
 {
 }
 

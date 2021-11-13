@@ -20,6 +20,7 @@ add_executable(simulator
                src/memory.cpp
                src/memorydefinition.cpp
                src/platform.cpp
+               src/platformdefinition.cpp
                src/program.cpp
                src/register.cpp
                )
