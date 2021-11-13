@@ -16,10 +16,12 @@ class MemoryDefinition
     int size() const;
     int access() const;
     std::string source() const;
+    unsigned int priority() const;
 
   private:
     std::string label_;
     int size_;
     int access_;
     std::string source_;
+    unsigned int priority_;
 };

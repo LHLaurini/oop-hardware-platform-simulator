@@ -13,6 +13,7 @@ Memory::Memory(const MemoryDefinition &definition)
     , numWait(accessTime_)
     , readHead(0)
     , writeHead(0)
+    , priority_(definition.priority())
 {
 }
 
@@ -41,6 +42,11 @@ std::string Memory::sourceLabel() const
     return sourceLabel_;
 }
 
+unsigned int Memory::priority() const
+{
+    return priority_;
+}
+
 void Memory::bind(Source &source)
 {
     source_ = &source;
@@ -60,7 +66,9 @@ void Memory::simulate(bool verbose)
     {
         numWait = accessTime_;
 
-        while (auto value = (*source_)->read())
+        // Only read while there is space and valid data
+
+        for (DataValue value; nextPosition(writeHead) == readHead && (value = (*source_)->read());)
         {
             write(value.get());
         }
@@ -93,11 +101,6 @@ std::size_t Memory::nextPosition(std::size_t position)
 
 void Memory::write(double value)
 {
-    if (nextPosition(writeHead) == readHead)
-    {
-        // throw std::runtime_error("memory is full");
-    }
-
     data[writeHead] = value;
 
     writeHead = nextPosition(writeHead);

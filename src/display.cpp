@@ -8,6 +8,7 @@ Display::Display(const DisplayDefinition &definition)
     : sourceLabel_(definition.source())
     , refresh_(definition.refresh())
     , numWait(refresh_)
+    , priority_(definition.priority())
 {
 }
 
@@ -24,6 +25,11 @@ Source &Display::source() const
 std::string Display::sourceLabel() const
 {
     return sourceLabel_;
+}
+
+unsigned int Display::priority() const
+{
+    return priority_;
 }
 
 void Display::bind(Source &source)

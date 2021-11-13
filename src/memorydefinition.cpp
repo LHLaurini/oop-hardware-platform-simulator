@@ -7,6 +7,7 @@ MemoryDefinition::MemoryDefinition(const Definition &definition)
     , size_(std::stoi(definition.fromKey("SIZE")))
     , access_(std::stoi(definition.fromKey("ACCESS")))
     , source_(definition.fromKey("SOURCE"))
+    , priority_(std::stoi(definition.fromKey("PRIORITY")))
 {
 }
 
@@ -28,4 +29,9 @@ int MemoryDefinition::access() const
 std::string MemoryDefinition::source() const
 {
     return source_;
+}
+
+unsigned int MemoryDefinition::priority() const
+{
+    return priority_;
 }

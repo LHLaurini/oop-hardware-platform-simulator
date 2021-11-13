@@ -14,8 +14,10 @@ class DisplayDefinition
 
     int refresh() const;
     std::string source() const;
+    unsigned int priority() const;
 
   private:
     int refresh_;
     std::string source_;
+    unsigned int priority_;
 };

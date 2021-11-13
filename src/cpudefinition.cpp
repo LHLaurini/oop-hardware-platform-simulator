@@ -7,6 +7,7 @@ CPUDefinition::CPUDefinition(const Definition &definition)
     , cores_(std::stoi(definition.fromKey("CORES")))
     , frequency_(std::stoi(definition.fromKey("FREQUENCY")))
     , program_(definition.fromKey("PROGRAM"))
+    , priority_(std::stoi(definition.fromKey("PRIORITY")))
 {
 }
 
@@ -28,4 +29,9 @@ int CPUDefinition::frequency() const
 std::filesystem::path CPUDefinition::program() const
 {
     return program_;
+}
+
+unsigned int CPUDefinition::priority() const
+{
+    return priority_;
 }

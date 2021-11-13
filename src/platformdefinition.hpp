@@ -14,8 +14,10 @@ class PlatformDefinition
 
     std::string label() const;
     std::vector<std::filesystem::path> components() const;
+    unsigned int priority() const;
 
   private:
     std::string label_;
     std::vector<std::filesystem::path> components_;
+    unsigned int priority_;
 };

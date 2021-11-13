@@ -6,6 +6,7 @@ BusDefinition::BusDefinition(const Definition &definition)
     : label_(definition.fromKey("LABEL"))
     , width_(std::stoi(definition.fromKey("WIDTH")))
     , source_(definition.fromKey("SOURCE"))
+    , priority_(std::stoi(definition.fromKey("PRIORITY")))
 {
 }
 
@@ -22,4 +23,9 @@ int BusDefinition::width() const
 std::string BusDefinition::source() const
 {
     return source_;
+}
+
+unsigned int BusDefinition::priority() const
+{
+    return priority_;
 }

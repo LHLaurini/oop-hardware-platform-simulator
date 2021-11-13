@@ -12,6 +12,7 @@ Bus::Bus(const BusDefinition &definition)
     , width_(definition.width())
     , label_(definition.label())
     , numTimesRead(0)
+    , priority_(definition.priority())
 {
 }
 
@@ -33,6 +34,11 @@ std::string Bus::sourceLabel() const
 Source &Bus::source() const
 {
     return **source_;
+}
+
+unsigned int Bus::priority() const
+{
+    return priority_;
 }
 
 void Bus::bind(Source &source)

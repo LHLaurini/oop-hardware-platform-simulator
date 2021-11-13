@@ -19,6 +19,7 @@ class Display : public Component, public Bindable
     int refresh() const;
     Source &source() const override;
     std::string sourceLabel() const override;
+    unsigned int priority() const override;
 
     // methods
     void bind(Source &source) override;
@@ -29,4 +30,5 @@ class Display : public Component, public Bindable
     std::optional<Source *> source_;
     int refresh_;
     int numWait;
+    unsigned int priority_;
 };

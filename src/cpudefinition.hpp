@@ -16,10 +16,12 @@ class CPUDefinition
     int cores() const;
     int frequency() const;
     std::filesystem::path program() const;
+    unsigned int priority() const;
 
   private:
     std::string label_;
     int cores_;
     int frequency_;
     std::filesystem::path program_;
+    unsigned int priority_;
 };

@@ -8,18 +8,25 @@
 
 Platform::Platform() = default;
 
-Platform::Platform(const PlatformDefinition &definition) : label_(definition.label())
+Platform::Platform(const PlatformDefinition &definition) : label_(definition.label()), priority_(definition.priority())
 {
     for (auto &componentPath : definition.components())
     {
         Definition definition(componentPath);
-        components.emplace_back(definition.makeComponent());
 
-        auto source = dynamic_cast<Source *>(components.back().get());
+        std::list<std::unique_ptr<Component>> tmpList;
+        tmpList.emplace_back(definition.makeComponent());
+
+        auto source = dynamic_cast<Source *>(tmpList.back().get());
         if (source)
         {
             labelMap[source->label()] = source;
         }
+
+        components.merge(tmpList, [](auto &a, auto &b) {
+            // Is a ordered before b?
+            return a->priority() > b->priority();
+        });
     }
 
     for (auto &component : components)
@@ -35,6 +42,11 @@ Platform::Platform(const PlatformDefinition &definition) : label_(definition.lab
 std::string Platform::label() const
 {
     return label_;
+}
+
+unsigned int Platform::priority() const
+{
+    return priority_;
 }
 
 void Platform::simulate(bool verbose)

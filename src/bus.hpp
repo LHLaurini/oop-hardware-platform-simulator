@@ -22,6 +22,7 @@ class Bus : public Component, public Source, public Bindable
     unsigned int width() const;
     std::string sourceLabel() const override;
     Source &source() const override;
+    unsigned int priority() const override;
 
     // methods
     void bind(Source &source) override;
@@ -36,4 +37,5 @@ class Bus : public Component, public Source, public Bindable
     unsigned int numTimesRead;
     std::queue<double> pending;
     std::queue<double> ready;
+    unsigned int priority_;
 };

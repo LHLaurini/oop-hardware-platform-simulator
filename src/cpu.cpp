@@ -13,6 +13,7 @@ CPU::CPU(const CPUDefinition &definition)
     , cores_(definition.cores())
     , frequency_(definition.frequency())
     , label_(definition.label())
+    , priority_(definition.priority())
 {
 }
 
@@ -34,6 +35,11 @@ unsigned int CPU::frequency() const
 std::string CPU::label() const
 {
     return label_;
+}
+
+unsigned int CPU::priority() const
+{
+    return priority_;
 }
 
 void CPU::simulate(bool verbose)

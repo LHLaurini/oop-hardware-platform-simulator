@@ -21,6 +21,7 @@ class CPU : public Component, public Source
     unsigned int cores() const;
     unsigned int frequency() const;
     std::string label() const override;
+    unsigned int priority() const override;
 
     // methods
     void simulate(bool verbose) override;
@@ -33,4 +34,5 @@ class CPU : public Component, public Source
     unsigned int cores_;
     unsigned int frequency_;
     std::string label_;
+    unsigned int priority_;
 };

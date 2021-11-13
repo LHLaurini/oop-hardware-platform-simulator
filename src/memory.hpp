@@ -23,6 +23,7 @@ class Memory : public Component, public Source, public Bindable
     std::time_t accessTime() const;
     Source &source() const override;
     std::string sourceLabel() const override;
+    unsigned int priority() const;
 
     // methods
     void bind(Source &source) override;
@@ -42,4 +43,5 @@ class Memory : public Component, public Source, public Bindable
     int numWait;
     std::size_t readHead;
     std::size_t writeHead;
+    unsigned int priority_;
 };
