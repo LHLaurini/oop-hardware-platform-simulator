@@ -2,29 +2,33 @@
 
 #include "component.hpp"
 #include "datavalue.hpp"
+#include "program.hpp"
+#include "register.hpp"
+#include "source.hpp"
 
-#include <iostream>
 #include <string>
 
-class CPU : public Component
+class CPUDefinition;
+
+class CPU : public Component, public Source
 {
   public:
     CPU();
-    CPU(std::istream &definition);
+    CPU(const CPUDefinition &definition);
 
     // getters
     unsigned int activeCore() const;
     unsigned int cores() const;
     unsigned int frequency() const;
-    std::string label() const;
+    std::string label() const override;
 
     // methods
-    void simulate();
-    DataValue read();
+    void simulate() override;
+    DataValue read() override;
 
   private:
-    // Program program;
-    // Register register;
+    Program program;
+    Register register_;
     unsigned int activeCore_;
     unsigned int cores_;
     unsigned int frequency_;

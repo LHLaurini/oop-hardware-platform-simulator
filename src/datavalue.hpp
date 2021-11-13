@@ -4,32 +4,11 @@ class DataValue
 {
   public:
     DataValue();
-    DataValue(double value);
-
-    double get() const
-    {
-        return value;
-    }
-
-    bool isValid() const
-    {
-        return valid;
-    }
-
-    operator double() const
-    {
-        return value;
-    }
-
-    operator bool() const
-    {
-        return isValid();
-    }
-
-    bool operator!() const
-    {
-        return !isValid();
-    }
+    explicit DataValue(double value);
+    double get() const;
+    bool isValid() const;
+    explicit operator bool() const;
+    bool operator!() const;
 
   private:
     double value;
