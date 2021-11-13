@@ -21,7 +21,7 @@ class Platform : public Component
     std::string label() const;
 
     // methods
-    void simulate() override;
+    void simulate(bool verbose) override;
 
   private:
     std::string label_;

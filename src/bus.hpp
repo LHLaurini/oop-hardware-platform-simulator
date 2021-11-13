@@ -26,7 +26,7 @@ class Bus : public Component, public Source, public Bindable
     // methods
     void bind(Source &source) override;
     DataValue read() override;
-    void simulate();
+    void simulate(bool verbose);
 
   private:
     std::string sourceLabel_;

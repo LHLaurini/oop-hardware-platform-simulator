@@ -2,7 +2,7 @@
 
 #include "cpudefinition.hpp"
 
-#include <fstream>
+#include <iostream>
 #include <ranges>
 
 CPU::CPU() = default;
@@ -36,9 +36,14 @@ std::string CPU::label() const
     return label_;
 }
 
-void CPU::simulate()
+void CPU::simulate(bool verbose)
 {
     using std::views::iota;
+
+    if (verbose)
+    {
+        std::clog << "CPU '" << label_ << "'\nNumber of cores: " << cores_ << "\nFrequency: " << frequency_;
+    }
 
     for ([[maybe_unused]] auto _ : iota(0U, frequency_))
     {
@@ -48,7 +53,20 @@ void CPU::simulate()
             program.restart();
         }
 
-        register_.write(program.compute().compute());
+        auto instruction = program.compute();
+        auto result = instruction.compute();
+
+        if (verbose)
+        {
+            std::clog << "\nActive core: " << activeCore_ << "\nInstruction: " << instruction << "\nResult: " << result;
+        }
+
+        register_.write(result);
+    }
+
+    if (verbose)
+    {
+        std::clog << "\n\n";
     }
 }
 

@@ -81,3 +81,35 @@ std::tuple<Instruction::OpCode, double, double> Instruction::parseLine(const std
 
     return {opcode, op1, op2};
 }
+
+std::ostream &operator<<(std::ostream &stream, const Instruction &instruction)
+{
+    const char *mnemonic = "";
+
+    switch (instruction.opcode)
+    {
+    case Instruction::OpCode::NOP:
+        mnemonic = "NOP";
+        break;
+
+    case Instruction::OpCode::ADD:
+        mnemonic = "ADD";
+        break;
+
+    case Instruction::OpCode::SUB:
+        mnemonic = "SUB";
+        break;
+
+    case Instruction::OpCode::MUL:
+        mnemonic = "MUL";
+        break;
+
+    case Instruction::OpCode::DIV:
+        mnemonic = "DIV";
+        break;
+    }
+
+    stream << mnemonic << " " << instruction.op1 << " " << instruction.op2;
+
+    return stream;
+}

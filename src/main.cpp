@@ -35,7 +35,7 @@ int pmain(int argc, char **argv)
 
     for ([[maybe_unused]] auto _ : iota(0, args.steps))
     {
-        topComponent->simulate();
+        topComponent->simulate(args.verbose);
     }
 
     return 0;

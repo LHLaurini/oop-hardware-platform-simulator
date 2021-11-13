@@ -2,6 +2,7 @@
 
 #include "busdefinition.hpp"
 
+#include <iostream>
 #include <ranges>
 
 Bus::Bus() = default;
@@ -54,9 +55,14 @@ DataValue Bus::read()
     numTimesRead++;
 }
 
-void Bus::simulate()
+void Bus::simulate(bool verbose)
 {
     using std::views::iota;
+
+    if (verbose)
+    {
+        std::clog << "Bus '" << label_ << "'\nNumber of accesses: " << numTimesRead << "\n\n";
+    }
 
     while (!pending.empty())
     {

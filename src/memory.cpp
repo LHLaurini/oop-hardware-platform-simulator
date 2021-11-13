@@ -1,5 +1,7 @@
 #include "memory.hpp"
 
+#include <iostream>
+
 Memory::Memory() = default;
 
 Memory::Memory(const MemoryDefinition &definition)
@@ -44,8 +46,16 @@ void Memory::bind(Source &source)
     source_ = &source;
 }
 
-void Memory::simulate()
+void Memory::simulate(bool verbose)
 {
+    if (verbose)
+    {
+        const auto unread = (writeHead - readHead + size_) % size_;
+
+        std::clog << "Memory '" << label_ << "'\nAccess time: " << accessTime_
+                  << "\nNumber of unread values: " << unread << "\nNumber of free places: " << size_ - unread << "\n\n";
+    }
+
     if (--numWait < 0)
     {
         numWait = accessTime_;

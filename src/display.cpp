@@ -31,7 +31,7 @@ void Display::bind(Source &source)
     source_ = &source;
 }
 
-void Display::simulate()
+void Display::simulate(bool)
 {
     if (--numWait < 0)
     {

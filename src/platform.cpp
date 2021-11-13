@@ -4,7 +4,7 @@
 #include "definition.hpp"
 #include "source.hpp"
 
-#include <fstream>
+#include <iostream>
 
 Platform::Platform() = default;
 
@@ -37,10 +37,15 @@ std::string Platform::label() const
     return label_;
 }
 
-void Platform::simulate()
+void Platform::simulate(bool verbose)
 {
+    if (verbose)
+    {
+        std::clog << "Platform '" << label_ << "'\n\n";
+    }
+
     for (auto &component : components)
     {
-        component->simulate();
+        component->simulate(verbose);
     }
 }

@@ -5,6 +5,8 @@
 
 class Instruction
 {
+    friend std::ostream &operator<<(std::ostream &stream, const Instruction &instruction);
+
   public:
     enum class OpCode
     {
@@ -30,3 +32,5 @@ class Instruction
     double op1;
     double op2;
 };
+
+std::ostream &operator<<(std::ostream &stream, const Instruction &instruction);

@@ -22,7 +22,7 @@ class Display : public Component, public Bindable
 
     // methods
     void bind(Source &source) override;
-    void simulate() override;
+    void simulate(bool) override;
 
   private:
     std::string sourceLabel_;

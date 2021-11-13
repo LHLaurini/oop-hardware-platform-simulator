@@ -23,7 +23,7 @@ class CPU : public Component, public Source
     std::string label() const override;
 
     // methods
-    void simulate() override;
+    void simulate(bool verbose) override;
     DataValue read() override;
 
   private:

@@ -26,7 +26,7 @@ class Memory : public Component, public Source, public Bindable
 
     // methods
     void bind(Source &source) override;
-    void simulate() override;
+    void simulate(bool verbose) override;
     DataValue read() override;
 
   private:
