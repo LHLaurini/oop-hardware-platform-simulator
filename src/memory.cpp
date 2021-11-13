@@ -74,7 +74,7 @@ void Memory::simulate(bool verbose)
 
         // Only read while there is space and valid data
 
-        for (DataValue value; nextPosition(writeHead) == readHead && (value = (*source_)->read());)
+        for (DataValue value; nextPosition(writeHead) != readHead && (value = (*source_)->read());)
         {
             write(value.get());
         }
