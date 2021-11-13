@@ -1,17 +1,17 @@
 #include "instruction.hpp"
 
+#include <numeric>
 #include <sstream>
 
-Instruction::Instruction() : Instruction(OpCode::NOP, 0, 0)
+Instruction::Instruction() : Instruction(OpCode::NOP, {})
 {
 }
 
-Instruction::Instruction(OpCode opcode, double op1, double op2) : opcode(opcode), op1(op1), op2(op2)
+Instruction::Instruction(OpCode opcode, const std::vector<double> &ops) : opcode(opcode), ops(ops)
 {
 }
 
-Instruction::Instruction(const std::tuple<OpCode, double, double> &line)
-    : Instruction(std::get<0>(line), std::get<1>(line), std::get<2>(line))
+Instruction::Instruction(const std::pair<OpCode, std::vector<double>> &line) : Instruction(line.first, line.second)
 {
 }
 
@@ -27,30 +27,54 @@ double Instruction::compute()
         return 0;
 
     case OpCode::ADD:
-        return op1 + op2;
+        return std::accumulate(ops.begin(), ops.end(), 0.0);
 
     case OpCode::SUB:
-        return op1 - op2;
+        if (!ops.empty())
+        {
+            return std::accumulate(std::next(ops.begin()), ops.end(), ops.front(), std::minus<double>());
+        }
+        else
+        {
+            return 0;
+        }
 
     case OpCode::MUL:
-        return op1 * op2;
+        return std::accumulate(ops.begin(), ops.end(), 1.0, std::multiplies<double>());
 
     case OpCode::DIV:
-        return op1 / op2;
+        if (!ops.empty())
+        {
+            return std::accumulate(std::next(ops.begin()), ops.end(), ops.front(), std::divides<double>());
+        }
+        else
+        {
+            return 0;
+        }
 
     default:
         abort();
     }
 }
 
-std::tuple<Instruction::OpCode, double, double> Instruction::parseLine(const std::string &line)
+std::pair<Instruction::OpCode, std::vector<double>> Instruction::parseLine(const std::string &line)
 {
     std::istringstream stream(line);
 
     std::string mnemonic;
-    double op1, op2;
+    std::vector<double> ops;
 
-    stream >> mnemonic >> op1 >> op2;
+    stream >> mnemonic;
+
+    for (double op; stream >> op;)
+    {
+        ops.emplace_back(op);
+    }
+
+    if (stream.fail() && !stream.eof())
+    {
+        throw std::runtime_error("extra characters after instruction");
+    }
 
     OpCode opcode;
 
@@ -79,7 +103,7 @@ std::tuple<Instruction::OpCode, double, double> Instruction::parseLine(const std
         throw std::runtime_error("invalid instruction");
     }
 
-    return {opcode, op1, op2};
+    return {opcode, ops};
 }
 
 std::ostream &operator<<(std::ostream &stream, const Instruction &instruction)
@@ -109,7 +133,12 @@ std::ostream &operator<<(std::ostream &stream, const Instruction &instruction)
         break;
     }
 
-    stream << mnemonic << " " << instruction.op1 << " " << instruction.op2;
+    stream << mnemonic;
+
+    for (auto &op : instruction.ops)
+    {
+        stream << " " << op;
+    }
 
     return stream;
 }

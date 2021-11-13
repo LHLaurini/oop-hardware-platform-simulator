@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-#include <tuple>
+#include <utility>
+#include <vector>
 
 class Instruction
 {
@@ -18,19 +19,18 @@ class Instruction
     };
 
     Instruction();
-    Instruction(OpCode opcode, double op1, double op2);
-    Instruction(const std::tuple<OpCode, double, double> &line);
+    Instruction(OpCode opcode, const std::vector<double> &ops);
+    Instruction(const std::pair<OpCode, std::vector<double>> &line);
     Instruction(const std::string &line);
 
     // methods
     double compute();
 
   private:
-    static std::tuple<OpCode, double, double> parseLine(const std::string &line);
+    static std::pair<OpCode, std::vector<double>> parseLine(const std::string &line);
 
     OpCode opcode;
-    double op1;
-    double op2;
+    std::vector<double> ops;
 };
 
 std::ostream &operator<<(std::ostream &stream, const Instruction &instruction);
