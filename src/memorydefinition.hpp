@@ -4,7 +4,9 @@
 
 #include <filesystem>
 #include <map>
+#include <span>
 #include <string>
+#include <vector>
 
 class MemoryDefinition
 {
@@ -17,6 +19,7 @@ class MemoryDefinition
     int access() const;
     std::string source() const;
     unsigned int priority() const;
+    std::span<const double> init() const;
 
   private:
     std::string label_;
@@ -24,4 +27,5 @@ class MemoryDefinition
     int access_;
     std::string source_;
     unsigned int priority_;
+    std::vector<double> init_;
 };

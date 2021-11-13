@@ -12,9 +12,15 @@ Memory::Memory(const MemoryDefinition &definition)
     , data(std::make_unique<double[]>(size_))
     , numWait(accessTime_)
     , readHead(0)
-    , writeHead(0)
+    , writeHead(definition.init().size())
     , priority_(definition.priority())
 {
+    if (definition.init().size() > size_ - 1)
+    {
+        throw std::runtime_error("too much data for INIT");
+    }
+
+    std::ranges::copy(definition.init(), data.get());
 }
 
 std::string Memory::label() const

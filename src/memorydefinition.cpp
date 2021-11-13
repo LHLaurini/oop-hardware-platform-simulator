@@ -1,5 +1,7 @@
 #include "memorydefinition.hpp"
 
+#include <sstream>
+
 MemoryDefinition::MemoryDefinition() = default;
 
 MemoryDefinition::MemoryDefinition(const Definition &definition)
@@ -8,6 +10,23 @@ MemoryDefinition::MemoryDefinition(const Definition &definition)
     , access_(std::stoi(definition.fromKey("ACCESS")))
     , source_(definition.fromKey("SOURCE"))
     , priority_(std::stoi(definition.fromKey("PRIORITY")))
+    , init_([&] {
+        std::vector<double> values;
+
+        std::istringstream stream(definition.fromKey("INIT"));
+
+        for (double value; stream >> value;)
+        {
+            values.emplace_back(value);
+        }
+
+        if (stream.fail() && !stream.eof())
+        {
+            throw std::runtime_error("extra characters in INIT");
+        }
+
+        return values;
+    }())
 {
 }
 
@@ -34,4 +53,9 @@ std::string MemoryDefinition::source() const
 unsigned int MemoryDefinition::priority() const
 {
     return priority_;
+}
+
+std::span<const double> MemoryDefinition::init() const
+{
+    return std::span(init_);
 }
